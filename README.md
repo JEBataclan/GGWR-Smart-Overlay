@@ -9,7 +9,7 @@ Go to the root directory of the project, then execute the following in 2 differe
 To control the react app, open both
 ### `localhost:<port>/`
 and
-### `localhost:<port>/Admin
+### `localhost:<port>/Admin`
 In the the same or different browsers.
 
 Whatever you do in the "/Admin" page will reflect on the "/" page.
