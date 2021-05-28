@@ -26,7 +26,7 @@ import {
 } from './Index.elements'
 
 var roles = ["top", "jungle", "middle", "bottom", "utility"];
-var order = ["blue", "red", "red", "blue", "blue", "red", "red", "blue", "blue", "red", "red", "blue", "blue", "red"];
+var order = ["blue", "red", "blue", "red", "blue", "red", "red", "blue", "blue", "red", "red", "blue", "blue", "red"];
 
 const PickComponent = React.memo(({ champion, playerIGN, currentSlot, team, idx, slot }) => {
   console.log(champion);

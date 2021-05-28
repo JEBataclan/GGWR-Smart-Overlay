@@ -319,7 +319,7 @@ const Admin = ({ socket }) => {
               </PicksContainer>
               <BansContainer team="blue">
                 <BanComponent champion={currentPB[0].champion} currentSlot={currentSlot} team={"blue"} idx={0} slot={0} key={0}/>
-                <BanComponent champion={currentPB[3].champion} currentSlot={currentSlot} team={"blue"} idx={1} slot={3} key={3}/>
+                <BanComponent champion={currentPB[2].champion} currentSlot={currentSlot} team={"blue"} idx={1} slot={2} key={3}/>
               </BansContainer>
             </BlueContainer>
  
@@ -361,7 +361,7 @@ const Admin = ({ socket }) => {
               </PicksContainer>
               <BansContainer team="red">
                 <BanComponent champion={currentPB[1].champion} currentSlot={currentSlot} team={"red"} idx={0} slot={1} key={1}/>
-                <BanComponent champion={currentPB[2].champion} currentSlot={currentSlot} team={"red"} idx={1} slot={2} key={2}/>
+                <BanComponent champion={currentPB[3].champion} currentSlot={currentSlot} team={"red"} idx={1} slot={3} key={2}/>
               </BansContainer>
             </RedContainer>
           </FlexContainer>
