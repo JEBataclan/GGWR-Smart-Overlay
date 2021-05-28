@@ -47,6 +47,7 @@
        {"name": "Rakan", "role": "support tank"},
        {"name": "Rammus", "role": "tank"},
        {"name": "Rengar", "role": "assassin"},
+       {"name": "Renekton", "role": "fighter tank"},
        {"name": "Seraphine", "role": "support mage"},
        {"name": "Shyvana", "role": "fighter tank"},
        {"name": "Singed", "role": "tank mage"},
