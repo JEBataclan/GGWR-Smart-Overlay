@@ -2,6 +2,10 @@
 Wild Rift Smart Overlay created for TUP-M GEAR's GG:Wild Rift tournament
 
 ## Instructions
+After you've downloaded/cloned this repository, run...
+### `npm install`
+inside the folder.
+
 Go to the root directory of the project, then execute the following in 2 different command lines...
 ### `npm start`
 ### `node server.js`
