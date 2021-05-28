@@ -193,7 +193,6 @@ const Admin = ({ socket }) => {
   };
 
   const handleDragStart = data => event => {
-    //console.log(event.currentTarget.slot)
     let fromItem = JSON.stringify({ id: event.currentTarget.slot });
     event.dataTransfer.setData("dragContent", fromItem);
   };
@@ -205,7 +204,6 @@ const Admin = ({ socket }) => {
 
   const  handleDrop = (data) => event => {
     event.preventDefault();
-    //console.log(event.currentTarget.slot)
 
     let fromItem = JSON.parse(event.dataTransfer.getData("dragContent"));
     let toItem = { id: event.currentTarget.slot };
