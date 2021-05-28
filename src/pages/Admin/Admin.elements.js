@@ -108,6 +108,7 @@ export const ChampionPickSplash = styled.div`
 
 export const ChampionName = styled.div`
     color: white;
+    font-weight: 500;
     position: absolute;
     left: 10px;
     bottom: 35px;

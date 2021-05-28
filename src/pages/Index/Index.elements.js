@@ -175,6 +175,7 @@ export const ChampionPickSplash = styled.div`
 
 export const ChampionName = styled.div`
     color: white;
+    font-weight: 500;
     position: absolute;
     left: 10px;
     bottom: 35px;
@@ -182,7 +183,7 @@ export const ChampionName = styled.div`
 
 export const PlayerName = styled.div`
     color: white;
-    font-weigh: 700;
+    font-weight: 700;
     font-type: italic;
     font-size: 30px;
     position: absolute;
