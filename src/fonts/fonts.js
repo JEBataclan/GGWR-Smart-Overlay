@@ -25,7 +25,7 @@ export default createGlobalStyle`
     }
     
     @font-face {
-        font-family: 'VeganAbattoir';
+        font-family: 'Vegan Abattoir';
         src: local('VeganAbattoir'),
         url(${VeganAbattoir}) format('opentype');
     }

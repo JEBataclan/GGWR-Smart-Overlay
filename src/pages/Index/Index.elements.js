@@ -13,6 +13,7 @@ export const BarContainer = styled.div`
     flex-direction: row;
     height: 150px;
     width: 100%;
+    text-transform: uppercase;
 `;
 
 export const TeamInfoContainer = styled.div`
@@ -206,88 +207,11 @@ export const PicksContainer = styled.div`
 
     background-color: rgba(18,23,26,.9);
 
-    & > ${Pick} > ${PlayerName},${ChampionName} {
-        ${({team}) => team === "blue" ?
-        `
-            right: 10px;
-            text-align: right;
-        ` :
-        `
-            left: 10px;
-            text-align:left;
-        `}
-    }
-
-    & > ${Pick} > ${PlayerName},${ChampionName} {
-        ${({team}) => team === "blue" ?
-        `
-            right: 10px;
-            text-align: right;
-        ` :
-        `
-            left: 10px;
-            text-align:left;
-        `}
-    }
-
     ${({team}) => team === 'red' && (`
         ${Pick}:after {
             right: 0px;
         }   
     `)}
-`;
-
-export const Ban = styled.div`
-    flex: 1;
-    max-height: 100px;
-    transition: 2s;
-    overflow: hidden;
-    box-sizing: border-box;
-    height: inherit;
-`;
-
-export const ChampionBanSplash = styled.div`
-    display: flex;
-    background-repeat: no-repeat;
-    flex-shrink: 0;
-    transition: filter 0.5s ease-in-out;
-
-    ${({ blank }) => blank ?
-    `
-        background-size: 25%;
-        background-position: 50% 50% !important;
-        height: 100% !important;
-        width: 100%;
-
-        &:after {
-            content:"";
-            border-top:1px solid rgb(255, 255, 255);
-            width: 50px;
-            transform: rotate(45deg);
-            transform-origin: -50% 55%;
-        }
-    `
-    :
-    `
-        background-size: 300px;
-        background-position: 50% 10% !important;
-        height: 100%;
-        width: 100%;
-    `}
-
-    ${({ active }) => active === true &&
-    `
-        animation: ban-shadow 3s infinite;
-        
-        @keyframes ban-shadow {
-            50% {box-shadow: inset 0px 0px 30px 0px rgb(219, 200, 93);}
-        }
-    `}
-
-    ${({active, blank}) => (!active && !blank) &&
-    `
-        filter: grayscale(100%);
-    `}
 `;
 
 export const BlueBansContainer = styled.div`
@@ -300,16 +224,6 @@ export const BlueBansContainer = styled.div`
     align-items: center;
     justify-content: space-around;
     background-color:rgba(9,12,13, .9);
-
-    & > ${Ban}:nth-child(n+2)::after {
-        content: "";
-        position: absolute;
-        height: 50%;
-        background: rgb(153, 153, 153);
-        top: 25%;
-        width: 1px;
-        z-index: 1;
-    }
 `;
 
 export const RedBansContainer = styled.div`
@@ -324,16 +238,6 @@ export const RedBansContainer = styled.div`
     right: 0;
     flex-direction: row-reverse;
     background-color:rgba(9,12,13, .9);
-
-    & > ${Ban}:nth-child(-n+4)::after {
-        content: "";
-        position: absolute;
-        height: 50%;
-        background: rgb(153, 153, 153);
-        top: 25%;
-        width: 1px;
-        z-index: 1;
-    }
 `;
 
 export const BanSymbol = styled.div`

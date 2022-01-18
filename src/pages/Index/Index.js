@@ -14,51 +14,14 @@ import {
   Blue,
   Red,
   PicksContainer,
-  Pick,
-  ChampionPickSplash,
-  ChampionName,
-  PlayerName,
   BlueBansContainer,
   RedBansContainer,
-  Ban,
-  ChampionBanSplash,
 } from './Index.elements'
 
-var roles = ["top", "jungle", "middle", "bottom", "utility"];
+import PickComponent from "./components/PickComponent";
+import BanComponent from "./components/BanComponent";
+
 var order = ['blue', 'red', 'red', 'blue', 'blue', 'red', 'blue', 'red', 'red', 'blue', 'blue', 'red', 'red', 'blue', 'blue', 'red', 'red', 'blue', 'blue', 'red']
-
-const PickComponent = React.memo(({ phase, champion, playerIGN, currentSlot, team, idx, slot }) => {
-  var urlBG = champion === "" ? require(`../../images/role-${roles[idx]}.png`).default : require(`../../images/cache/11.21.1/champion/${champion.replace(/[^A-Z0-9]/ig, "")}_centered_splash.jpg`).default;
-  return (
-    <Pick id={`"pick_${team}_${idx}"`} key={slot} phase={phase}>
-      <ChampionPickSplash
-        blank={champion === "" ? true : false}
-        active={slot === currentSlot ? true : false}
-        style={{ backgroundImage: `url(${urlBG})` }}
-        id={`"pick_${team}_splash_${idx}"`}
-      />
-      <ChampionName id={`"pick_${team}_champ_${idx}"`}>{champion}</ChampionName>
-      <PlayerName className={"text-ign"} id={`"pick_${team}_ign_${idx}"`}>{playerIGN}</PlayerName>
-    </Pick>
-  );
-});
-
-const BanComponent = React.memo(({ champion, currentSlot, team, idx, slot }) => {
-  var urlBG = champion !== "" && require(`../../images/cache/11.21.1/champion/${champion.replace(/[^A-Z0-9]/ig, "")}_centered_splash.jpg`).default;
-  //style={{ backgroundImage: `url(${urlBG})` }}
-  return (
-    <Ban id={`ban_${team}_${idx}`} key={slot}>
-      <ChampionBanSplash
-        blank={champion === "" ? true : false}
-        active={slot === currentSlot ? true : false}
-        style={{ backgroundImage: `url(${urlBG})` }}
-        id={`bans_${team}_splash_${idx}`}
-      >
-        {/*champion !== "" && slot !== currentSlot && (<BanSymbol src={require(`../../images/ban-placeholder.png`).default}/>)*/}
-      </ChampionBanSplash>
-    </Ban>
-  );
-});
 
 const TimerComponent = React.memo(({currentSlot, startTimer}) => {
   const [seconds, setSeconds] = useState(25);
@@ -233,7 +196,7 @@ const Index = ({ socket }) => {
       <PicksContainer id="picks_red" team="red">
         {currentPicks.red.map((pick, idx) => {
           return (
-            <PickComponent phase={(currentSlot >=6 && currentSlot <= 11) ? 'three-big-two-small' : currentSlot >= 16 && currentSlot <= 19 ? 'three-small-two-big' : ''} team={"blue"} idx={idx} slot={pick.id} key={pick.id} champion={pick.champion} playerIGN={playerIGNs[idx+5].ign} currentSlot={currentSlot}/>
+            <PickComponent phase={(currentSlot >=6 && currentSlot <= 11) ? 'three-big-two-small' : currentSlot >= 16 && currentSlot <= 19 ? 'three-small-two-big' : ''} team={"red"} idx={idx} slot={pick.id} key={pick.id} champion={pick.champion} playerIGN={playerIGNs[idx+5].ign} currentSlot={currentSlot}/>
           )
         })}
       </PicksContainer>

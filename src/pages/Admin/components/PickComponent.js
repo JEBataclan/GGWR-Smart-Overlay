@@ -1,17 +1,5 @@
 import styled from "styled-components";
 
-const Pick = styled.div`
-    position: relative;
-    width: 100%;
-    border: 1px solid black;
-    flex-grow: 1;
-
-    & > input {
-        position: absolute;
-        bottom: 0px;
-    }
-`;
-
 const ChampionPickSplash = styled.div`
     height: 100%;
     width: 100%;
@@ -61,6 +49,30 @@ export const PlayerName = styled.div`
     bottom: 0;
 `;
 
+const Pick = styled.div`
+    position: relative;
+    width: 100%;
+    border: 1px solid black;
+    flex-grow: 1;
+
+    & > input {
+        position: absolute;
+        bottom: 0px;
+    }
+
+    & > ${ChampionName}, input {
+        ${({team}) => team === "blue" ?
+        `
+            right: 10px;
+            text-align: right;
+        ` :
+        `
+            left: 10px;
+            text-align: left;
+        `}
+    }
+`;
+
 var roles = ["top", "jungle", "middle", "bottom", "utility"];
 
 const PickComponent = ({ team, idx, slot, champion, currentSlot, handlePlayerIGNs, onDragStart, onDragOver, onDrop }) => {
@@ -68,7 +80,7 @@ const PickComponent = ({ team, idx, slot, champion, currentSlot, handlePlayerIGN
     var pickID = `"pick_${team}_${idx}"`;
     
     return (
-      <Pick id={pickID} key={slot} slot={slot} draggable="true" onDragStart={onDragStart(pickID)} onDragOver={onDragOver(pickID)} onDrop={onDrop(pickID, team)}>
+      <Pick team={team} id={pickID} key={slot} slot={slot} draggable="true" onDragStart={onDragStart(pickID)} onDragOver={onDragOver(pickID)} onDrop={onDrop(pickID, team)}>
         <ChampionPickSplash
           blank={champion === "" ? true : false}
           active={slot === currentSlot ? true : false}

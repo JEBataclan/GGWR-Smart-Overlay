@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import {
   Container,
   BarContainer,
-  Blue,
-  Red,
+  TeamBar,
   TeamInfoContainer,
-  PhaseInfo,
+  GameInfoBar,
   PicksContainer,
   FlexContainer,
   BlueContainer,
@@ -20,6 +19,7 @@ import {
   ChampionSplash,
   ButtonRow,
   Button,
+  Input,
 } from "./Admin.elements";
 
 import PickComponent from "./components/PickComponent";
@@ -253,16 +253,16 @@ const Admin = ({ socket }) => {
       {status === "fetched" && (
         <Container>
           <BarContainer>
-            <Blue>
+            <TeamBar team="blue">
               <TeamInfoContainer>
-                <input
+                <Input
                   id="blue_initials_input"
                   placeholder="Blue Team's Initials"
                   onBlur={(e) => {
                     setBarInfo({ ...barInfo, blueTeamInitials: e.target.value });
                   }}
                 />
-                <input
+                <Input
                   id="blue_name_input"
                   placeholder="Blue Team's Name"
                   onBlur={(e) => {
@@ -270,7 +270,7 @@ const Admin = ({ socket }) => {
                   }}
                 />
               </TeamInfoContainer>
-                <input
+                <Input
                   type="number"
                   id="blue_score_input"
                   placeholder="Score"
@@ -278,43 +278,27 @@ const Admin = ({ socket }) => {
                     setBarInfo({ ...barInfo, blueTeamScore: e.target.value });
                   }}
                 />
-            </Blue>
+            </TeamBar>
 
-            <PhaseInfo>
-              <input
+            <GameInfoBar>
+              <Input
                 id="phase_round_input"
                 placeholder="(Ex. Semi-Finals, Finals)"
                 onBlur={(e) => {
                   setBarInfo({ ...barInfo, phaseRound: e.target.value });
                 }}
               />
-              <input
+              <Input
                 id="phase_game_input"
                 placeholder="(Ex. Game 1/2/3)"
                 onBlur={(e) => {
                   setBarInfo({ ...barInfo, phaseGame: e.target.value });
                 }}
               />
-            </PhaseInfo>
+            </GameInfoBar>
 
-            <Red>
-              <TeamInfoContainer>
-                <input
-                  id="red_initials_input"
-                  placeholder="Red Team's Initials"
-                  onBlur={(e) => {
-                    setBarInfo({ ...barInfo, redTeamInitials: e.target.value });
-                  }}
-                />
-                <input
-                  id="red_name_input"
-                  placeholder="Red Team's Name"
-                  onBlur={(e) => {
-                    setBarInfo({ ...barInfo, redTeamName: e.target.value });
-                  }}
-                />
-              </TeamInfoContainer>
-              <input
+            <TeamBar team="red">
+              <Input
                 type="number"
                 id="red_score_input"
                 placeholder="Score"
@@ -322,7 +306,23 @@ const Admin = ({ socket }) => {
                   setBarInfo({ ...barInfo, redTeamScore: e.target.value });
                 }}
               />
-            </Red>
+              <TeamInfoContainer>
+                <Input
+                  id="red_initials_input"
+                  placeholder="Red Team's Initials"
+                  onBlur={(e) => {
+                    setBarInfo({ ...barInfo, redTeamInitials: e.target.value });
+                  }}
+                />
+                <Input
+                  id="red_name_input"
+                  placeholder="Red Team's Name"
+                  onBlur={(e) => {
+                    setBarInfo({ ...barInfo, redTeamName: e.target.value });
+                  }}
+                />
+              </TeamInfoContainer>
+            </TeamBar>
           </BarContainer>
 
           <FlexContainer>
@@ -330,7 +330,7 @@ const Admin = ({ socket }) => {
               <PicksContainer team="blue">
                 {currentPicks.blue.map((pick, idx) => {
                   return (
-                    <PickComponent admin={true} team={"blue"} idx={idx} slot={pick.id} key={pick.id} champion={pick.champion} handlePlayerIGNs={handlePlayerIGNs} currentSlot={currentSlot} onDragStart={handleDragStart} onDragOver={handleDragOver} onDrop={handleDrop}/>
+                    <PickComponent team={"blue"} idx={idx} slot={pick.id} key={pick.id} champion={pick.champion} handlePlayerIGNs={handlePlayerIGNs} currentSlot={currentSlot} onDragStart={handleDragStart} onDragOver={handleDragOver} onDrop={handleDrop}/>
                   )
                 })}
               </PicksContainer>
@@ -353,7 +353,7 @@ const Admin = ({ socket }) => {
                   <ListItem onClick={() => setFilter(filter === "support" ? "" : "support")}>Support</ListItem>
                   <ListItem onClick={() => setFilter(filter === "tank" ? "" : "tank")}>Tank</ListItem>
                   <ListItem>
-                    <input
+                    <Input
                       id="filter"
                       name="filter"
                       type="text"
@@ -375,7 +375,7 @@ const Admin = ({ socket }) => {
               <PicksContainer team="red">
                 {currentPicks.red.map((pick, idx) => {
                   return (
-                    <PickComponent admin={true} team={"red"} idx={idx} slot={pick.id} key={pick.id} champion={pick.champion} handlePlayerIGNs={handlePlayerIGNs} currentSlot={currentSlot} onDragStart={handleDragStart} onDragOver={handleDragOver} onDrop={handleDrop}/>
+                    <PickComponent team={"red"} idx={idx} slot={pick.id} key={pick.id} champion={pick.champion} handlePlayerIGNs={handlePlayerIGNs} currentSlot={currentSlot} onDragStart={handleDragStart} onDragOver={handleDragOver} onDrop={handleDrop}/>
                   )
                 })}
               </PicksContainer>
