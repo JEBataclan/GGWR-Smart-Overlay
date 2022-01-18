@@ -1,145 +1,149 @@
 import styled from "styled-components";
-import GlobalFonts from "../../fonts/fonts";
 
 export const Container = styled.div`
     width: 1920px;
-    height: 1920px;
+    height: 1080px;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 `;
 
 export const BarContainer = styled.div`
-    position: relative;
-    height: 160px;
+    display: flex;
+    flex-direction: row;
+    height: 150px;
     width: 100%;
-    background-color: white;
 `;
 
 export const TeamInfoContainer = styled.div`
-    margin: 0;
-    position: absolute;
-    top: 50%;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    color: #D4AF37;
 `;
 
 export const TeamInitials = styled.div`
-    font: 900 100px "Montserrat", sans-serif;
+    font-family: Akira Expanded;
+    font-size: 65px;
+    line-height: 65px;
     text-transform: uppercase;
-    display: block;
-    line-height: 100px;
 `;
 
 export const TeamName = styled.div`
-    font: 500 20px "Montserrat", sans-serif;
+    font: 600 12px "Montserrat", sans-serif;
+    letter-spacing: 14px;
     text-transform: uppercase;
-    display: block;
-    line-height: 20px;
+`;
+
+export const Game = styled.div`
+    font-size: 14px;
+    margin-bottom: 5px;
+`;
+export const Round = styled.div`
+    font-size: 20px;
 `;
 
 export const Timer = styled.div`
-    color: white;
-    font-family: "Cornerstone";
-    font-size: 70px;
+    font-size: 60px;
 `;
 
-export const PhaseInfo = styled.div`
-    width: 100%;
-    text-align: center;
-    height: inherit;
-    font: 500 25px "Montserrat", sans-serif;
-    margin-top: -5px;
+export const TimerContainer = styled.div`
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+`
+
+export const GameInfo = styled.div`
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: #BBA151;
 `;
 
 export const PhaseInfoText = styled.div``;
 
-export const PhaseGame = styled.div`
-    position: absolute;
-    top: 120px;
-    left: 840px;
-    border-top: 40px solid #ff073a;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    height: 0;
-    width: 220px;
-
-    & > ${PhaseInfoText} {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -120%);
-        text-align: center;
-        color: white;
-    }
-`;
-
-export const ScoreText = styled.div`
-    font-size: 75px;
-    line-height: 85px;
+export const Score = styled.div`
+    color: #D4AF37;
+    font-size: 100px;
+    font-weight: 500;
 `;
 
 export const Blue = styled.div`
-    position: absolute;
-    left: -25px;
-    top: 0;
+    width: 45%;
     height: inherit;
-    width: 36%;
-    direction: rtl;
-    background-color: #0e97a7;
-    transform: skew(14deg);
-    text-indent: 75px;
+    background: linear-gradient(90deg, rgba(9,12,13,1) 0%, rgba(18,23,26,1) 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     & > ${TeamInfoContainer} {
-        transform: skew(-14deg) translateY(-50%);
+        margin-left: 40px;
+    }
+    
+    & > ${Score} {
+        margin-right: 50px;
     }
 `;
 
 export const Red = styled.div`
-    position: absolute;
-    right: -25px;
-    top: 0;
+    width: 45%;
     height: inherit;
-    width: 36%;
-    background-color: #c01f32;
-    transform: skew(-14deg);
-    text-indent: 75px;
+    direction: rtl;
+    background: linear-gradient(-90deg, rgba(9,12,13,1) 0%, rgba(18,23,26,1) 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     & > ${TeamInfoContainer} {
-        transform: skew(14deg) translateY(-50%);
+        margin-right: 40px;
+    }
+
+    & > ${Score} {
+        margin-left: 50px;
     }
 `;
 
-export const TimerContainer = styled.div`
-    position: absolute;
-    width: 8%;
-    height: inherit;
-    top: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    ${({team}) => team === "blue" ? 
-    `left: 670px; transform: skew(14deg);
-    & > ${Timer} {
-        transform: skew(-14deg);
-    }`
-    :
-    `right: 670px; transform: skew(-14deg);
-    & > ${Timer} {
-        transform: skew(14deg);
-    }`}
-
-    ${({active, team}) => active ?
-    (
-        team === "blue" ? `background-color: #0e97a7;` : `background-color: #c01f32;`
-    )
-    :
-    `
-        background-color: #141414;
-    `}
-`;
-
 export const Pick = styled.div`
-    position: relative;
-    width: 100%;
-    border: 1px solid black;
-    flex-grow: 1;
+    & {
+        position: relative;
+        width: 100%;
+        flex: 1;
+        transition: 2s;
+    }
+
+    &:after {
+        content: "";
+        position: absolute;
+        height: 1px;
+        background: rgba(255, 255, 255, .25);
+        top: 100%;
+        width: 450px;
+        z-index: 1;
+    }
+
+     ${({phase}) => phase === 'three-big-two-small' ? (`
+        &:nth-child(n+1) {
+            flex: 3 1 0;
+        }
+
+        &:nth-child(n+4) {
+            flex: 1 1 0;
+        }
+    `) : phase === 'three-small-two-big' && (`
+        &:nth-child(n+1) {
+            flex: 1 1 0;
+        }
+
+        &:nth-child(n+4) {
+            flex: 3 1 0;
+        }
+    `)}
 `;
 
 export const ChampionPickSplash = styled.div`
@@ -153,7 +157,6 @@ export const ChampionPickSplash = styled.div`
     ${({ blank }) => blank ? 
     `
         background-size: 15%;
-        background-color: #141414;
         background-position: 50% 50%;
         background-repeat: no-repeat;
     `
@@ -168,7 +171,7 @@ export const ChampionPickSplash = styled.div`
         animation: pick-shadow 3s infinite;
         
         @keyframes pick-shadow {
-            50% {box-shadow: inset 0px 0px 40px white;}
+            50% {box-shadow: inset 0 -150px 100px -100px rgb(219, 200, 93);}
         }
     `}
 `;
@@ -193,15 +196,15 @@ export const PlayerName = styled.div`
 
 export const PicksContainer = styled.div`
     position: absolute;
-    top: 180px;
+    top: 150px;
     ${({team}) => team === "blue" ? `left: 0;` : `right: 0;`}
     width: 500px;
-    height: 750px;
+    height: 800px;
 
     display: flex;
     flex-direction: column;
 
-    background-color: var(--debug-color-green);
+    background-color: rgba(18,23,26,.9);
 
     & > ${Pick} > ${PlayerName},${ChampionName} {
         ${({team}) => team === "blue" ?
@@ -214,50 +217,70 @@ export const PicksContainer = styled.div`
             text-align:left;
         `}
     }
+
+    & > ${Pick} > ${PlayerName},${ChampionName} {
+        ${({team}) => team === "blue" ?
+        `
+            right: 10px;
+            text-align: right;
+        ` :
+        `
+            left: 10px;
+            text-align:left;
+        `}
+    }
+
+    ${({team}) => team === 'red' && (`
+        ${Pick}:after {
+            right: 0px;
+        }   
+    `)}
 `;
 
 export const Ban = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    flex: 1;
+    max-height: 100px;
+    transition: 2s;
     overflow: hidden;
-    width: 45%;
-    height: 80px;
     box-sizing: border-box;
-    transform: skewX(14deg);
     height: inherit;
-    border: 1px solid black;
 `;
 
 export const ChampionBanSplash = styled.div`
     display: flex;
     background-repeat: no-repeat;
-    transform: skewX(-14deg);
     flex-shrink: 0;
     transition: filter 0.5s ease-in-out;
 
     ${({ blank }) => blank ?
     `
         background-size: 25%;
-        background-color: #141414;
         background-position: 50% 50% !important;
-        height: 120% !important;
-        width: 120%;
+        height: 100% !important;
+        width: 100%;
+
+        &:after {
+            content:"";
+            border-top:1px solid rgb(255, 255, 255);
+            width: 50px;
+            transform: rotate(45deg);
+            transform-origin: -50% 55%;
+        }
     `
     :
     `
-        background-size: cover;
-        background-position: 50% 0% !important;
-        height: 125%;
-        width: 130%;
+        background-size: 300px;
+        background-position: 50% 10% !important;
+        height: 100%;
+        width: 100%;
     `}
 
     ${({ active }) => active === true &&
     `
-        animation: pick-shadow 3s infinite;
+        animation: ban-shadow 3s infinite;
         
-        @keyframes pick-shadow {
-            50% {box-shadow: inset 0px 0px 40px white;}
+        @keyframes ban-shadow {
+            50% {box-shadow: inset 0px 0px 30px 0px rgb(219, 200, 93);}
         }
     `}
 
@@ -271,31 +294,45 @@ export const BlueBansContainer = styled.div`
     overflow: hidden;
     position: absolute;
     top: 950px;
-    width: 528px;
-    height: 100px;
+    width: 500px;
+    height: 130px;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    background-color:rgba(9,12,13, .9);
+
+    & > ${Ban}:nth-child(n+2)::after {
+        content: "";
+        position: absolute;
+        height: 50%;
+        background: rgb(153, 153, 153);
+        top: 25%;
+        width: 1px;
+        z-index: 1;
+    }
 `;
 
 export const RedBansContainer = styled.div`
     overflow: hidden;
     position: absolute;
     top: 950px;
-    width: 528px;
-    height: 100px;
+    width: 500px;
+    height: 130px;
     display: flex;
     align-items: center;
     justify-content: space-around;
     right: 0;
     flex-direction: row-reverse;
+    background-color:rgba(9,12,13, .9);
 
-    & > ${Ban} {
-        transform: skewX(-14deg);
-    }
-
-    & > ${Ban} > ${ChampionBanSplash} {
-        transform: skewX(14deg);
+    & > ${Ban}:nth-child(-n+4)::after {
+        content: "";
+        position: absolute;
+        height: 50%;
+        background: rgb(153, 153, 153);
+        top: 25%;
+        width: 1px;
+        z-index: 1;
     }
 `;
 

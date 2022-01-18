@@ -21,8 +21,8 @@ io.on("connection", (socket) => {
       io.sockets.emit("receiveStartTimer");
   });
 
-  socket.on("sendUpdatedPB", (updatedPB) => {
-    io.sockets.emit("receiveUpdatedPB", updatedPB);
+  socket.on("sendUpdatedPicks", (newPicks) => {
+    io.sockets.emit("receiveUpdatedPicks", newPicks);
   });
 });
 

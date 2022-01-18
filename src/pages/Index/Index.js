@@ -5,14 +5,14 @@ import {
   TeamInfoContainer,
   TeamInitials,
   TeamName,
+  GameInfo,
+  Score,
+  TimerContainer,
   Timer,
-  PhaseInfo,
-  PhaseGame,
-  ScoreText,
-  PhaseInfoText,
+  Round,
+  Game,
   Blue,
   Red,
-  TimerContainer,
   PicksContainer,
   Pick,
   ChampionPickSplash,
@@ -22,17 +22,15 @@ import {
   RedBansContainer,
   Ban,
   ChampionBanSplash,
-  BanSymbol,
 } from './Index.elements'
 
 var roles = ["top", "jungle", "middle", "bottom", "utility"];
-var order = ["blue", "red", "blue", "red", "blue", "red", "red", "blue", "blue", "red", "red", "blue", "blue", "red"];
+var order = ['blue', 'red', 'red', 'blue', 'blue', 'red', 'blue', 'red', 'red', 'blue', 'blue', 'red', 'red', 'blue', 'blue', 'red', 'red', 'blue', 'blue', 'red']
 
-const PickComponent = React.memo(({ champion, playerIGN, currentSlot, team, idx, slot }) => {
-  console.log(champion);
-  var urlBG = champion === "" ? require(`../../images/role-${roles[idx]}.png`).default : require(`../../images/cache/11.8.1/champion/${champion.replace(/[^A-Z0-9]/ig, "")}_centered_splash.jpg`).default;
+const PickComponent = React.memo(({ phase, champion, playerIGN, currentSlot, team, idx, slot }) => {
+  var urlBG = champion === "" ? require(`../../images/role-${roles[idx]}.png`).default : require(`../../images/cache/11.21.1/champion/${champion.replace(/[^A-Z0-9]/ig, "")}_centered_splash.jpg`).default;
   return (
-    <Pick id={`"pick_${team}_${idx}"`} key={slot}>
+    <Pick id={`"pick_${team}_${idx}"`} key={slot} phase={phase}>
       <ChampionPickSplash
         blank={champion === "" ? true : false}
         active={slot === currentSlot ? true : false}
@@ -46,8 +44,8 @@ const PickComponent = React.memo(({ champion, playerIGN, currentSlot, team, idx,
 });
 
 const BanComponent = React.memo(({ champion, currentSlot, team, idx, slot }) => {
-  console.log(champion);
-  var urlBG = champion === "" ? require(`../../images/ban-placeholder.png`).default : require(`../../images/cache/11.8.1/champion/${champion.replace(/[^A-Z0-9]/ig, "")}_centered_splash.jpg`).default;
+  var urlBG = champion !== "" && require(`../../images/cache/11.21.1/champion/${champion.replace(/[^A-Z0-9]/ig, "")}_centered_splash.jpg`).default;
+  //style={{ backgroundImage: `url(${urlBG})` }}
   return (
     <Ban id={`ban_${team}_${idx}`} key={slot}>
       <ChampionBanSplash
@@ -62,7 +60,7 @@ const BanComponent = React.memo(({ champion, currentSlot, team, idx, slot }) => 
   );
 });
 
-const TimerComponent = React.memo(({team, currentSlot, startTimer}) => {
+const TimerComponent = React.memo(({currentSlot, startTimer}) => {
   const [seconds, setSeconds] = useState(25);
 
   useEffect(() => {
@@ -76,40 +74,48 @@ const TimerComponent = React.memo(({team, currentSlot, startTimer}) => {
   useEffect(() => {
     setSeconds(25);
   }, [currentSlot, startTimer])
- 
-  if ((team === order[currentSlot] && startTimer) || currentSlot === 14) {
-    return(
-      <TimerContainer team={team} active={team === order[currentSlot] || currentSlot === 14 ? true : false}>
-        <Timer id={`${team}_timer`}>{team === order[currentSlot] || currentSlot === 14 ? (`:${seconds}`) : ("")}</Timer>
-      </TimerContainer>
-    )
+
+  if ((currentSlot >= 0 && currentSlot <= 20) && startTimer) {
+    return (<Timer id={`timer`}>{`:${seconds}`}</Timer>);
   } else {
-    return(
-      <TimerContainer team={team} active={false}>
-        <Timer id={`${team}_timer`}>{""}</Timer>
-      </TimerContainer>
-    )
+    return (<Timer id={`timer`}>{`:00`}</Timer>);
   }
 });
 
 const Index = ({ socket }) => {
   const [currentSlot, setCurrentSlot] = useState(0);
-  const [currentPB, setCurrentPB] = useState([
-    {id: 1, champion: ""},
-    {id: 2, champion: ""},
-    {id: 3, champion: ""},
-    {id: 4, champion: ""},
-    {id: 5, champion: ""},
-    {id: 6, champion: ""},
-    {id: 7, champion: ""},
-    {id: 8, champion: ""},
-    {id: 9, champion: ""},
-    {id: 10, champion: ""},
-    {id: 11, champion: ""},
-    {id: 12, champion: ""},
-    {id: 13, champion: ""},
-    {id: 14, champion: ""},
-  ]);
+  const [currentPicks, setCurrentPicks] = useState({
+    blue: [
+      {id: 6, champion: ""},
+      {id: 9, champion: ""},
+      {id: 10, champion: ""},
+      {id: 17, champion: ""},
+      {id: 18, champion: ""},
+    ],
+    red: [
+      {id: 7, champion: ""},
+      {id: 8, champion: ""},
+      {id: 11, champion: ""},
+      {id: 16, champion: ""},
+      {id: 19, champion: ""},
+    ],
+  });
+  const [currentBans, setCurrentBans] = useState({
+    blue: [
+      {id: 0, champion: ""},
+      {id: 3, champion: ""},
+      {id: 4, champion: ""},
+      {id: 13, champion: ""},
+      {id: 14, champion: ""},
+    ],
+    red: [
+      {id: 1, champion: ""},
+      {id: 2, champion: ""},
+      {id: 5, champion: ""},
+      {id: 12, champion: ""},
+      {id: 15, champion: ""},
+    ]
+  });
   const [playerIGNs, setPlayerIGNs] = useState([
     {id: 1, ign: ""},
     {id: 2, ign: ""},
@@ -149,12 +155,22 @@ const Index = ({ socket }) => {
     });
 
     socket.on("receiveSelectedChampion", (selectedChampion, currentSlot) => {
-      if (currentSlot <= 13) {
-        setCurrentPB((previousPB) => {
-          const newPB = Array.from(previousPB);
-          newPB[currentSlot].champion = selectedChampion;
-          return newPB;
-        });
+      if ((currentSlot >= 0 && currentSlot <= 5) || (currentSlot >= 12 && currentSlot <= 15)) {
+        setCurrentBans((previousBans) => {
+          const newBans = Object.assign({}, previousBans);
+          let idx = newBans[order[currentSlot]].findIndex(x => x.id === currentSlot);
+          newBans[order[currentSlot]][idx].champion = selectedChampion;
+          return newBans;
+        })
+      }
+  
+      else if ((currentSlot >= 6 && currentSlot <= 11) || (currentSlot >= 16 && currentSlot <= 19)) {
+        setCurrentPicks((previousPicks) => {
+          const newPicks = Object.assign({}, previousPicks);
+          let idx = newPicks[order[currentSlot]].findIndex(x => x.id === currentSlot);
+          newPicks[order[currentSlot]][idx].champion = selectedChampion;
+          return newPicks;
+        })
       }
     });
 
@@ -166,14 +182,13 @@ const Index = ({ socket }) => {
       setStartTimer(true);
     });
 
-    socket.on("receiveUpdatedPB", (updatedPB) => {
-      setCurrentPB(updatedPB);
+    socket.on("receiveUpdatedPicks", (newPicks) => {
+      setCurrentPicks(newPicks);
     });
   }, []);
 
   return (
     <Container>
-      {console.log("render from index")}
       <BarContainer>
         <Blue>
           <TeamInfoContainer>
@@ -184,19 +199,16 @@ const Index = ({ socket }) => {
               {barInfo.blueTeamName}
             </TeamName>
           </TeamInfoContainer>
+          <Score>{barInfo.blueTeamScore}</Score>
         </Blue>
 
-        <TimerComponent team="blue" currentSlot={currentSlot} startTimer={startTimer}/>
-
-        <PhaseInfo>
-          <ScoreText id={"scores"}>{barInfo.phaseScores}</ScoreText>
-          <PhaseInfoText id={"phase_round"}>{barInfo.phaseRound}</PhaseInfoText>
-          <PhaseGame>
-            <PhaseInfoText id={"phase_game"}>{barInfo.phaseGame}</PhaseInfoText>
-          </PhaseGame>
-        </PhaseInfo>
-
-        <TimerComponent team="red" currentSlot={currentSlot} startTimer={startTimer}/>
+        <GameInfo>
+          <TimerContainer>
+              <TimerComponent currentSlot={currentSlot} startTimer={startTimer}/>
+            </TimerContainer>
+          <Round id={"phase_round"}>{barInfo.phaseRound}</Round>
+          <Game id={"phase_game"}>{barInfo.phaseGame}</Game>
+        </GameInfo>
 
         <Red>
           <TeamInfoContainer>
@@ -207,31 +219,38 @@ const Index = ({ socket }) => {
               {barInfo.redTeamName}
             </TeamName>
           </TeamInfoContainer>
+          <Score>{barInfo.redTeamScore}</Score>
         </Red>
       </BarContainer>
 
       <PicksContainer id="picks_blue" team="blue">
-        <PickComponent champion={currentPB[4].champion} playerIGN={playerIGNs[0].ign} currentSlot={currentSlot} team={"blue"} idx={0} slot={4} key={4}/>
-        <PickComponent champion={currentPB[7].champion} playerIGN={playerIGNs[1].ign} currentSlot={currentSlot} team={"blue"} idx={1} slot={7} key={7}/>
-        <PickComponent champion={currentPB[8].champion} playerIGN={playerIGNs[2].ign} currentSlot={currentSlot} team={"blue"} idx={2} slot={8} key={8}/>
-        <PickComponent champion={currentPB[11].champion} playerIGN={playerIGNs[3].ign} currentSlot={currentSlot} team={"blue"} idx={3} slot={11} key={11}/>
-        <PickComponent champion={currentPB[12].champion} playerIGN={playerIGNs[4].ign} currentSlot={currentSlot} team={"blue"} idx={4} slot={12} key={12}/>
+        {currentPicks.blue.map((pick, idx) => {
+          return (
+            <PickComponent phase={(currentSlot >=6 && currentSlot <= 11) ? 'three-big-two-small' : currentSlot >= 16 && currentSlot <= 19 ? 'three-small-two-big' : ''} team={"blue"} idx={idx} slot={pick.id} key={pick.id} champion={pick.champion} playerIGN={playerIGNs[idx].ign} currentSlot={currentSlot}/>
+          )
+        })}
       </PicksContainer>
       <PicksContainer id="picks_red" team="red">
-        <PickComponent champion={currentPB[5].champion} playerIGN={playerIGNs[5].ign} currentSlot={currentSlot} team={"red"} idx={0} slot={5} key={5}/>
-        <PickComponent champion={currentPB[6].champion} playerIGN={playerIGNs[6].ign} currentSlot={currentSlot} team={"red"} idx={1} slot={6} key={6}/>
-        <PickComponent champion={currentPB[9].champion} playerIGN={playerIGNs[7].ign} currentSlot={currentSlot} team={"red"} idx={2} slot={9} key={9}/>
-        <PickComponent champion={currentPB[10].champion} playerIGN={playerIGNs[8].ign} currentSlot={currentSlot} team={"red"} idx={3} slot={10} key={10}/>
-        <PickComponent champion={currentPB[13].champion} playerIGN={playerIGNs[9].ign} currentSlot={currentSlot} team={"red"} idx={4} slot={13} key={13}/>
+        {currentPicks.red.map((pick, idx) => {
+          return (
+            <PickComponent phase={(currentSlot >=6 && currentSlot <= 11) ? 'three-big-two-small' : currentSlot >= 16 && currentSlot <= 19 ? 'three-small-two-big' : ''} team={"blue"} idx={idx} slot={pick.id} key={pick.id} champion={pick.champion} playerIGN={playerIGNs[idx+5].ign} currentSlot={currentSlot}/>
+          )
+        })}
       </PicksContainer>
 
       <BlueBansContainer id="bans_blue">
-        <BanComponent champion={currentPB[0].champion} currentSlot={currentSlot} team={"blue"} idx={0} slot={0} key={0}/>
-        <BanComponent champion={currentPB[2].champion} currentSlot={currentSlot} team={"blue"} idx={1} slot={2} key={2}/>
+        {currentBans.blue.map((ban, idx) => {
+          return (
+            <BanComponent team={"blue"} idx={idx} slot={ban.id} key={ban.id} champion={ban.champion} currentSlot={currentSlot}/>
+          )
+        })}
       </BlueBansContainer>
       <RedBansContainer className={"bans red"} id="bans_red">
-        <BanComponent champion={currentPB[1].champion} currentSlot={currentSlot} team={"red"} idx={0} slot={1} key={1}/>
-        <BanComponent champion={currentPB[3].champion} currentSlot={currentSlot} team={"red"} idx={1} slot={3} key={3}/>
+        {currentBans.red.map((ban, idx) => {
+          return (
+            <BanComponent team={"red"} idx={idx} slot={ban.id} key={ban.id} champion={ban.champion} currentSlot={currentSlot}/>
+          )
+        })}
       </RedBansContainer>
     </Container>
   );

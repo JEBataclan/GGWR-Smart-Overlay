@@ -4,58 +4,50 @@ import GlobalFonts from "../../fonts/fonts";
 export const Container = styled.div`
     width: 100%;
     height: 100%;
-    margin: 0px;
-    padding: 0px;
-    overflow-x: hidden;
     background-color: #181A28;
 `
 export const BarContainer = styled.div`
     position: relative;
     height: 80px;
     width: 100%;
-    display: flex;
-    flex-direction: row;
+    background-color: white;
 `;
 
 export const TeamInfoContainer = styled.div`
     margin: 0;
     position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-item: center;
+    top: 50%;
+
+    & > input {
+        display: block;
+    }
 `;
 
 export const Blue = styled.div`
     position: absolute;
-    left: 0px;
+    left: -25px;
     top: 0;
     height: inherit;
     width: 36%;
+    direction: rtl;
     background-color: #0e97a7;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    text-indent: 75px;
 
-    & > input {
-        max-height: 20px;
+    & > ${TeamInfoContainer} {
+        transform: translateY(-50%) translateX(-10%);
     }
 `
 export const Red = styled.div`
     position: absolute;
-    right: 0px;
+    right: -25px;
     top: 0;
     height: inherit;
     width: 36%;
     background-color: #c01f32;
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    align-items: center;
+    text-indent: 75px;
 
-    & > input {
-        max-height: 20px;
+    & > ${TeamInfoContainer} {
+        transform: translateY(-50%) translateX(10%);
     }
 `
 export const PhaseInfo = styled.div`
