@@ -73,6 +73,7 @@ export const Score = styled.div`
     color: #D4AF37;
     font-size: 100px;
     font-weight: 500;
+    font: 500 100px 'Montserrat', sans-serif;
 `;
 
 export const Blue = styled.div`
